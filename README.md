@@ -81,5 +81,5 @@ To measure latency:
 That measured gap is your turn-gap latency — the actual round-trip time of the full audio pipeline (STT → application → TTS → network).
 
 <p align="center">
-  <img src="docs/sequence.jpg" />
+  <img src="docs/audacity.jpg" />
 </p>
