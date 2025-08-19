@@ -66,7 +66,7 @@ npm run dev
 
 ### Analyze the Turn Gap
 
-After your call, the server logs a download link to the recording. Download it and open the file in Audacity
+After your call, the server logs a download link to the recording. Download it and open the file in [Audacity](https://www.audacityteam.org/)
 or another audio editor.
 
 To measure latency:
