@@ -4,9 +4,7 @@ import fastifyFormbody from "@fastify/formbody";
 import fastifyWs from "@fastify/websocket";
 import Fastify from "fastify";
 
-const app = Fastify();
-app.register(fastifyFormbody);
-app.register(fastifyWs);
+let app = Fastify().register(fastifyFormbody).register(fastifyWs);
 
 const { HOSTNAME, PORT = 3000 } = process.env;
 
@@ -22,8 +20,6 @@ app.post("/incoming-call", (req, reply) => {
     <ConversationRelay
       url="wss://${HOSTNAME}/relay"
       welcomeGreeting="Say something"
-      transcriptionProvider="deepgram"
-      speechModel="nova-3-general"
     />
   </Connect>
 </Response>
@@ -38,33 +34,43 @@ app.post("/call-status", (req, reply) => {
 // ========================================
 // Conversation Relay Websocket Handler
 // ========================================
-app.get("/relay", { websocket: true }, ({ socket }) => {
-  console.log("/relay");
+app.register((app) =>
+  app.get("/relay", { websocket: true }, (ws) => {
+    console.log("/relay");
+    ws.on("error", (err) => console.error("WS error:", err));
+    ws.on("close", (code, reason) => {
+      console.log("WS closed", code, reason?.toString());
+    });
 
-  socket.on("message", (data) => {
-    try {
-      var msg = JSON.parse(data);
-    } catch (error) {
-      console.error(error);
-    }
+    ws.on("message", (data, isBinary) => {
+      const text = isBinary ? data.toString() : data.toString(); // normalize
 
-    switch (msg.type) {
-      case "setup":
-        console.log("setup", msg);
-        break;
+      let msg;
+      try {
+        msg = JSON.parse(text);
+      } catch (e) {
+        console.warn("Non-JSON or bad JSON from Twilio:", text);
+        return;
+      }
 
-      case "prompt":
-        console.log("prompt", msg);
+      switch (msg.type) {
+        case "setup":
+          console.log("setup", msg);
+          break;
 
-        break;
+        case "prompt":
+          console.log("prompt", msg);
 
-      case "interrupt":
-        console.log("interrupt", msg);
+          break;
 
-        break;
-    }
-  });
-});
+        case "interrupt":
+          console.log("interrupt", msg);
+
+          break;
+      }
+    });
+  }),
+);
 
 // ========================================
 // Start Server
