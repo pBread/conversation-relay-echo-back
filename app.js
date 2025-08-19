@@ -14,7 +14,7 @@ const client = twilio(ACCOUNT_SID, AUTH_TOKEN);
 // Phone Number Webhooks
 // ========================================
 app.post("/incoming-call", (req, reply) => {
-  console.log("/incoming-call", req.body);
+  console.log(`incoming-call webhook ${req.body.CallSid}`);
 
   reply.type("text/xml").send(`\
 <Response>
@@ -29,7 +29,7 @@ app.post("/incoming-call", (req, reply) => {
 });
 
 app.post("/call-status", (req, reply) => {
-  console.log("/call-status", req.body);
+  console.log(`status update ${req.body.CallStatus} ${req.body.CallSid}`);
   reply.status(200).send("done");
 });
 
@@ -38,7 +38,7 @@ app.post("/call-status", (req, reply) => {
 // ========================================
 app.register((app) =>
   app.get("/relay", { websocket: true }, (ws) => {
-    console.log("/relay");
+    console.log("websocket connecting. wait to speak...");
 
     ws.on("message", (data) => {
       const msg = JSON.parse(data.toString());
@@ -48,16 +48,20 @@ app.register((app) =>
           client
             .calls(msg.callSid)
             .recordings.create()
-            .then(({ accountSid, sid }) =>
+            .then(({ accountSid, sid, startTime }) => {
               console.log(
                 "recording url: ",
                 `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Recordings/${sid}.mp3`,
-              ),
-            );
+              );
+
+              console.log(`session started at ${startTime}`);
+            });
           break;
 
         case "prompt":
           if (!msg.last) return;
+          console.log(`complete transcipt: ${msg.voicePrompt}`);
+
           const action = { type: "text", token: msg.voicePrompt, last: true };
           ws.send(JSON.stringify(action));
 
