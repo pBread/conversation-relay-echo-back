@@ -15,6 +15,7 @@ const client = twilio(ACCOUNT_SID, AUTH_TOKEN);
 // Phone Number Webhooks
 // ========================================
 app.post("/incoming-call", (req, reply) => {
+  log.setStart();
   log.setActiveCallSid(req.body.CallSid);
   log.info(`incoming-call webhook ${req.body.CallSid}`);
 
@@ -51,12 +52,11 @@ app.register((app) =>
             .calls(msg.callSid)
             .recordings.create()
             .then(({ accountSid, sid, startTime }) => {
-              log.info(
-                "recording url: ",
-                `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Recordings/${sid}.mp3`,
-              );
+              log.setStart(startTime);
+              const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Recordings/${sid}.mp3?RequestedChannels=2`;
+              log.info(`recording url:\n${url}`);
 
-              log.info(`session started at ${startTime}`);
+              log.info(`session started at ${startTime.toISOString()}`);
             });
           break;
 
