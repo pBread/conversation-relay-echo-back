@@ -7,3 +7,5 @@ fastify.register(fastifyFormbody);
 fastify.register(fastifyWs);
 
 const { HOSTNAME, PORT = 3000 } = process.env;
+
+console.log("HELLO");

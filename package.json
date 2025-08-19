@@ -3,7 +3,9 @@
   "name": "conversation-relay-echo-back",
   "type": "module",
   "version": "1.0.0",
-  "scripts": {},
+  "scripts": {
+    "dev": "nodemon app.js --delay 1500ms"
+  },
   "dependencies": {
     "@fastify/formbody": "^8.0.2",
     "@fastify/websocket": "^11.2.0",
