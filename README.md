@@ -11,7 +11,7 @@ Why is this useful? Because it lets you measure the end-to-end latency of a real
 5. Twilio’s network back to your ear
 
 <p align="center">
-  <img src="docs/seq-echo-back.jpg" height="500px" />
+  <img src="docs/sequence.jpg" height="500px" />
 </p>
 
 ## Getting Started
@@ -79,3 +79,7 @@ To measure latency:
 4. Use Audacity’s selection tool to measure the time gap between those two points.
 
 That measured gap is your turn-gap latency — the actual round-trip time of the full audio pipeline (STT → application → TTS → network).
+
+<p align="center">
+  <img src="docs/sequence.jpg" />
+</p>
