@@ -54,7 +54,7 @@ app.register((app) =>
             .then(({ accountSid, sid, startTime }) => {
               log.setStart(startTime);
               const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Recordings/${sid}.mp3?RequestedChannels=2`;
-              log.info(`recording url:\n${url}`);
+              log.info(`recording url: \x1b[32m${url}\x1b[0m`);
 
               log.info(`session started at ${startTime.toISOString()}`);
             });
