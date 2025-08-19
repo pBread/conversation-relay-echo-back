@@ -48,16 +48,15 @@ app.register((app) =>
           client
             .calls(msg.callSid)
             .recordings.create()
-            .then(({ sid }) =>
+            .then(({ accountSid, sid }) =>
               console.log(
                 "recording url: ",
-                `https://www.twilio.com/console/voice/api/recordings/recording-logs/${sid}/download/mp3`,
+                `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Recordings/${sid}.mp3`,
               ),
             );
           break;
 
         case "prompt":
-          console.log("prompt", msg);
           if (!msg.last) return;
           const action = { type: "text", token: msg.voicePrompt, last: true };
           ws.send(JSON.stringify(action));
