@@ -3,10 +3,12 @@ import "dotenv/config";
 import fastifyFormbody from "@fastify/formbody";
 import fastifyWs from "@fastify/websocket";
 import Fastify from "fastify";
+import twilio from "twilio";
 
 let app = Fastify().register(fastifyFormbody).register(fastifyWs);
 
-const { HOSTNAME, PORT = 3000 } = process.env;
+const { HOSTNAME, PORT = 3000, ACCOUNT_SID, AUTH_TOKEN } = process.env;
+const client = twilio(ACCOUNT_SID, AUTH_TOKEN);
 
 // ========================================
 // Phone Number Webhooks
@@ -43,20 +45,26 @@ app.register((app) =>
 
       switch (msg.type) {
         case "setup":
-          console.log("setup", msg);
+          client
+            .calls(msg.callSid)
+            .recordings.create()
+            .then(({ sid }) =>
+              console.log(
+                "recording url: ",
+                `https://www.twilio.com/console/voice/api/recordings/recording-logs/${sid}/download/mp3`,
+              ),
+            );
           break;
 
         case "prompt":
           console.log("prompt", msg);
-
           if (!msg.last) return;
-          const action = { type: "token", text: msg.voicePrompt };
+          const action = { type: "text", token: msg.voicePrompt, last: true };
           ws.send(JSON.stringify(action));
 
           break;
 
         case "interrupt":
-          console.log("interrupt", msg);
           break;
       }
     });
