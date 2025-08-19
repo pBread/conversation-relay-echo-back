@@ -22,7 +22,7 @@ Copy `.env.example` to `.env` and fill in the values:
 cp .env.example .env
 ```
 
-- `HOSTNAME` — your ngrok hostname only. Example: `my-domain.ngrok-free.app`
+- `HOSTNAME` — your ngrok hostname only, e.g. `my-domain.ngrok-free.app`
 - `ACCOUNT_SID` and `AUTH_TOKEN` — your Twilio credentials (used to start recordings).
 
 **2. Start Ngrok**
@@ -46,8 +46,6 @@ Copy the hostname it prints (looks like `my-domain.ngrok-free.app`) into your `.
 In the Twilio Console, set your phone number’s Voice → A Call Comes In webhook to your public URL: `https://my-domain.ngrok-free.app/incoming-call`
 
 **4. Run It**
-
-Start the local server (with auto‑reload):
 
 ```bash
 npm run dev
