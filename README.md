@@ -1,6 +1,6 @@
 # Conversation Relay Echo Back
 
-This application is a simple echo-back server for Twilio Conversation Relay. Whatever you say during a call is transcribed, forwarded directly to a TTS service, and then spoken back to you.
+This application is a simple echo-back server for Twilio Conversation Relay. Whatever you say during a call is transcribed, forwarded directly to a TTS service, and then spoken back to you. The delay between when you stop speaking and when you hear the echoed response is the **turn-gap** latency.
 
 Why is this useful? Because it lets you measure the end-to-end latency of a real voice agent pipeline. When you speak, your audio travels through:
 
@@ -9,8 +9,6 @@ Why is this useful? Because it lets you measure the end-to-end latency of a real
 3. Through a websocket to your application
 4. Text-to-Speech (TTS) synthesis, converting the text back into voice
 5. Twilio’s network back to your ear
-
-The delay between when you stop speaking and when you hear the echoed response is the turn-gap latency. This same measurement applies in real conversational AI agents, where low latency is critical to natural interactions.
 
 <p align="center">
   <img src="docs/seq-echo-back.jpg" height="500px" />
