@@ -1,4 +1,4 @@
-# Conversation Relay Echo Back Benchmark
+# Conversation Relay Echo Back
 
 This application is a simple echo-back server for Twilio Conversation Relay. Whatever you say during a call is transcribed, forwarded directly to a TTS service, and then spoken back to you.
 
@@ -14,7 +14,7 @@ The delay between when you stop speaking and when you hear the echoed response i
 
 ## Getting Started
 
-### 1. Environment Variables
+**1. Environment Variables**
 
 Copy `.env.example` to `.env` and fill in the values:
 
@@ -25,7 +25,7 @@ cp .env.example .env
 - `HOSTNAME` — your ngrok hostname only. Example: `my-domain.ngrok-free.app`
 - `ACCOUNT_SID` and `AUTH_TOKEN` — your Twilio credentials (used to start recordings).
 
-### 2. Start Ngrok
+**2. Start Ngrok**
 
 You can try the helper script:
 
@@ -41,11 +41,11 @@ ngrok http 3000
 
 Copy the hostname it prints (looks like `my-domain.ngrok-free.app`) into your `.env` as `HOSTNAME`.
 
-### 3. Configure your Twilio Number
+**3. Configure your Twilio Number**
 
 In the Twilio Console, set your phone number’s Voice → A Call Comes In webhook to your public URL: `https://my-domain.ngrok-free.app/incoming-call`
 
-### 4. Run It
+**4. Run It**
 
 Start the local server (with auto‑reload):
 
