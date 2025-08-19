@@ -11,6 +11,15 @@ let app = Fastify().register(fastifyFormbody).register(fastifyWs);
 const { HOSTNAME, PORT = 3000, ACCOUNT_SID, AUTH_TOKEN } = process.env;
 const client = twilio(ACCOUNT_SID, AUTH_TOKEN);
 
+// Conversation Relay Configuration
+// https://www.twilio.com/docs/voice/twiml/connect/conversationrelay#conversationrelay-attributes
+
+const transcriptionProvider = "deepgram";
+const speechModel = "nova-3-general";
+
+const ttsProvider = "ElevenLabs";
+const voice = "tnSpp4vdxKPjI9w0GnoV";
+
 // ========================================
 // Phone Number Webhooks
 // ========================================
@@ -25,7 +34,11 @@ app.post("/incoming-call", (req, reply) => {
     <ConversationRelay
       url="wss://${HOSTNAME}/relay"
       welcomeGreeting="Say something"
+      transcriptionProvider="${transcriptionProvider}"
+      speechModel="${speechModel}"
 
+      ttsProvider="${ttsProvider}"
+      voice="${voice}"
     />
   </Connect>
 </Response>
