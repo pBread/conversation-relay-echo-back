@@ -12,7 +12,9 @@ Why is this useful? Because it lets you measure the end-to-end latency of a real
 
 The delay between when you stop speaking and when you hear the echoed response is the turn-gap latency. This same measurement applies in real conversational AI agents, where low latency is critical to natural interactions.
 
-<img src="docs/seq-echo-back.jpg" />
+<p align="center">
+  <img src="docs/seq-echo-back.jpg" width="100px" height="100px" />
+</p>
 
 ## Getting Started
 
