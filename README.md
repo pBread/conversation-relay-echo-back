@@ -1,9 +1,16 @@
 # Conversation Relay Echo Back Benchmark
 
-This project is a minimal Fastify + WebSocket server that integrates with Twilio Conversation Relay.
-Its purpose is to perform an echo‑back benchmark: whatever you say during a call is transcribed, then echoed back as synthesized speech.
+This application is a simple echo-back server for Twilio Conversation Relay. Whatever you say during a call is transcribed, forwarded directly to a TTS service, and then spoken back to you.
 
-This simulates the audio pipeline of a voice agent and helps you observe the latency of STT (speech‑to‑text), TTS (text‑to‑speech), and the voice network end‑to‑end.
+Why is this useful? Because it lets you measure the end-to-end latency of a real voice agent pipeline. When you speak, your audio travels through:
+
+1. Twilio’s voice network, carrying your voice in real time
+2. Speech-to-Text (STT) transcription, turning speech into text
+3. Through a websocket to your application
+4. Text-to-Speech (TTS) synthesis, converting the text back into voice
+5. Twilio’s network back to your ear
+
+The delay between when you stop speaking and when you hear the echoed response is the turn-gap latency. This same measurement applies in real conversational AI agents, where low latency is critical to natural interactions.
 
 ## Getting Started
 
@@ -61,6 +68,14 @@ npm run dev
 
 ### Analyze the Turn Gap
 
-Download the recording file. The URL should have been printed to your terminal.
+After your call, the server logs a download link to the recording. Download it and open the file in Audacity
+or another audio editor.
 
-Open the file in a tool like Audacity. Simply measure the gap between the speaking turns. That is your turn-gap latency.
+To measure latency:
+
+1. Zoom in on the waveform until you can clearly see the start and end of each speech segment.
+2. Identify the point where you stop speaking (end of your waveform).
+3. Find the point where the echoed playback begins (start of Twilio’s TTS waveform).
+4. Use Audacity’s selection tool to measure the time gap between those two points.
+
+That measured gap is your turn-gap latency — the actual round-trip time of the full audio pipeline (STT → application → TTS → network).
