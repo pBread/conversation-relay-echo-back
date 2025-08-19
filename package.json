@@ -1,0 +1,15 @@
+{
+  "author": "https://github.com/pBread",
+  "name": "conversation-relay-echo-back",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {},
+  "dependencies": {
+    "@fastify/formbody": "^8.0.2",
+    "@fastify/websocket": "^11.2.0",
+    "fastify": "^5.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
