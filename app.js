@@ -37,21 +37,9 @@ app.post("/call-status", (req, reply) => {
 app.register((app) =>
   app.get("/relay", { websocket: true }, (ws) => {
     console.log("/relay");
-    ws.on("error", (err) => console.error("WS error:", err));
-    ws.on("close", (code, reason) => {
-      console.log("WS closed", code, reason?.toString());
-    });
 
-    ws.on("message", (data, isBinary) => {
-      const text = isBinary ? data.toString() : data.toString(); // normalize
-
-      let msg;
-      try {
-        msg = JSON.parse(text);
-      } catch (e) {
-        console.warn("Non-JSON or bad JSON from Twilio:", text);
-        return;
-      }
+    ws.on("message", (data) => {
+      const msg = JSON.parse(data.toString());
 
       switch (msg.type) {
         case "setup":
@@ -61,11 +49,14 @@ app.register((app) =>
         case "prompt":
           console.log("prompt", msg);
 
+          if (!msg.last) return;
+          const action = { type: "token", text: msg.voicePrompt };
+          ws.send(JSON.stringify(action));
+
           break;
 
         case "interrupt":
           console.log("interrupt", msg);
-
           break;
       }
     });
